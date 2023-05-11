@@ -97,9 +97,6 @@ def get_ascii_encoding_base():
         return 10
     elif ascii_type == "Hexadecimal":
         return 16
-    else:
-        from tkinter import messagebox
-        messagebox.showerror("Greška!", "Greška! Odaberite ASCII tip!")
 
 ascii_encoding_base = 2
 
@@ -132,13 +129,15 @@ separator2.grid(row=17, column=0, columnspan = 2)
 ######################################## Base64 ###################################################
 def base64_encode():
     prepare_input_text()
-    base64_tekst = base64.b64encode(input_text)
-    set_converted_text(base64_tekst)
+    global converted_text
+    converted_text = base64.b64encode(input_text.encode('utf-8')).decode('utf-8')
+    set_converted_text(converted_text)
 
 def base64_decode():
     prepare_input_text()
-    base64_tekst = base64.b64decode(input_text)
-    set_converted_text(base64_tekst)
+    global converted_text
+    converted_text = base64.b64decode(input_text.encode('utf-8')).decode('utf-8')
+    set_converted_text(converted_text)
     
 natpis_b64_Str = tk.Label(window, text = "Base64 konvertiranje")
 natpis_b64_Str.grid(row=18, column=0, sticky="W", padx = 5, pady=10)
@@ -156,6 +155,33 @@ separator4.grid(row=20, column=0, columnspan = 2)
 ###################################################################################################
 
 ###################################################################################################
+########################################## Hex ####################################################
+def hex_encode():
+    prepare_input_text()
+    hex_text = input_text.encode("utf-8").hex()
+    set_converted_text(hex_text)
+
+def hex_decode():
+    prepare_input_text()
+    regular_text = bytes.fromhex(input_text).decode("utf-8")
+    set_converted_text(regular_text)
+    
+natpis_hex_Str = tk.Label(window, text = "Hex konvertiranje")
+natpis_hex_Str.grid(row=21, column=0, sticky="W", padx = 5, pady=10)
+
+hex_encode_bttn = tk.Button(window, text="Konvertiranje u Hex", command=hex_encode)
+hex_encode_bttn.grid(row=22, column=0)
+
+hex_decode_bttn = tk.Button(window, text="Konvertiranje iz Hexa", command=hex_decode)
+hex_decode_bttn.grid(row=22, column=1)
+
+separator5 = tk.Label(window, text = separtator_text)
+separator5.grid(row=23, column=0, columnspan = 2)
+
+######################################### Hex kraj ################################################
+###################################################################################################
+
+###################################################################################################
 ######################################## Unicode ##################################################
 def unicode_encode():
     prepare_input_text()
@@ -168,22 +194,15 @@ def unicode_decode():
     set_converted_text(regular_text)
     
 natpis_uni_Str = tk.Label(window, text = "Unicode konvertiranje")
-natpis_uni_Str.grid(row=21, column=0, sticky="W", padx = 5, pady=10)
+natpis_uni_Str.grid(row=24, column=0, sticky="W", padx = 5, pady=10)
 
 uni_encode_bttn = tk.Button(window, text="Konvertiranje u Unicode", command=unicode_encode)
-uni_encode_bttn.grid(row=22, column=0)
+uni_encode_bttn.grid(row=25, column=0)
 
 uni_decode_bttn = tk.Button(window, text="Konvertiranje iz Unicoda", command=unicode_decode)
-uni_decode_bttn.grid(row=22, column=1)
-
-separator3 = tk.Label(window, text = separtator_text)
-separator3.grid(row=23, column=0, columnspan = 2)
+uni_decode_bttn.grid(row=25, column=1)
 
 ####################################### Unicode kraj ##############################################
 ###################################################################################################
-
-
-# Ostale konverzije
-
 
 window.mainloop()
